@@ -19,6 +19,6 @@ There are different modules included.
 IAC: Infra Structure as a Code
 
 Common options that work with AWS are:
-  > Terraform (cloud-native)
-  > CloudFormation (aws-native)
-  > etc..
+  1. Terraform (cloud-native)
+  2. CloudFormation (aws-native)
+  etc..
