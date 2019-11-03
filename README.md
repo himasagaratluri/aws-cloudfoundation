@@ -12,5 +12,13 @@ There are different modules included.
  * security: code to manage security.
    * iam: roles, users and policies
    * waf: firewall rules
+ * configuration-management: managing code to config vms etc.
+   * ansible
 
-   
+
+IAC: Infra Structure as a Code
+
+Common options that work with AWS are:
+  > Terraform (cloud-native)
+  > CloudFormation (aws-native)
+  > etc..
