@@ -1,13 +1,21 @@
-resource "aws_s3_bucket" "tagging_reports_bucket" {
-  bucket = "aws-haops-tagging-reports"
+data "template_file" "s3_bucket_policy" {
+  template = file("${path.module}/policies/bucket_policy.json.tpl")
 
-  policy = file("${path.module}/policies/bucket_policy.json")
+  vars = {
+    bucket_name = var.bucket_name
+    org_id = var.org_id
+  }
+}
+
+resource "aws_s3_bucket" "tagging_reports_bucket" {
+  bucket = var.bucket_name
+
+  policy = data.template_file.s3_bucket_policy.rendered
 
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = aws_kms_key.kms_key.arn
-        sse_algorithm     = "aws:kms"
+        sse_algorithm     = "AES256"
       }
     }
   }
