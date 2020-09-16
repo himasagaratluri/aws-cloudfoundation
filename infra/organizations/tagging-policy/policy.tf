@@ -3,33 +3,12 @@ provider "aws" {
 }
 
 resource "aws_organizations_policy" "tagging_policy" {
-  name        = "aws-haops-tags-policy"
+  name        = var.policy_name
   description = "enforcing tagging policy"
 
   type = "TAG_POLICY"
 
-  content = <<CONTENT
-    {
-        "tags": {
-            "costcenter": {
-                "tag_key": {
-                    "@@assign": "CostCenter"
-                },
-                "tag_value": {
-                    "@@assign": [
-                        "100",
-                        "200"
-                    ]
-                },
-                "enforced_for": {
-                    "@@assign": [
-                        "secretsmanager:*"
-                    ]
-                }
-            }
-        }
-    }
-    CONTENT
+  content = file("${path.module}/policies/tag_policy.json")
 }
 
 resource "aws_organizations_policy_attachment" "account_attach" {
