@@ -1,0 +1,42 @@
+version: 0.2
+
+env:
+  variables:
+    TF_VERSION: "0.15.4"
+    TF_IN_AUTOMATION: "true"
+
+phases:
+  install:
+    commands:
+      - apt-get update -y
+      - apt-get install wget unzip -y
+      - wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+      - unzip terraform_${TF_VERSION}_linux_amd64.zip
+      - mv terraform /usr/local/bin
+      - terraform --version
+  pre_build:
+    commands:
+      - terraform init
+  build:
+    commands:
+      - terraform plan -out=tfplan -input=false
+  post_build:
+    commands:
+      - terraform apply -input=false tfplan
+
+artifacts:
+  files:
+    - target/messageUtil-1.0.jar
+  discard-paths: yes
+  secondary-artifacts:
+    artifact1:
+      files:
+        - target/artifact-1.0.jar
+      discard-paths: yes
+    artifact2:
+      files:
+        - target/artifact-2.0.jar
+      discard-paths: yes
+cache:
+  paths:
+    - '/root/.m2/**/*'
